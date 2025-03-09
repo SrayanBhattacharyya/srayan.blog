@@ -1,8 +1,7 @@
 # blog
 
 ```
-cd themes
-git clone https://github.com/aterenin/academic-paper
+git submodule update --init --recursive
 ```
 
 ### serve

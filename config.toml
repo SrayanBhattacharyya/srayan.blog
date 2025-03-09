@@ -1,0 +1,16 @@
+base_url = "https://srayan.in"
+theme="academic-paper"
+compile_sass = true # should be set to true
+build_search_index = false # not used by the theme
+minify_html = true # to ensure correct rendering due to minification of whitespace, should be set to true, unless there is a reason to override it
+
+[markdown]
+highlight_code = true # should be set to true unless the page has no code to highlight
+highlight_theme = "css" # this theme includes its own CSS-based styling of highlighting, so this should be set to CSS
+# other Markdown options - as described in the Zola documentation - go here, and set according to user preference
+
+[extra]
+footer_text = "This website is built using [Zola](https://www.getzola.org) and the [Academic Paper](http://github.com/aterenin/academic-paper/) theme, which is [designed to last](https://jeffhuang.com/designed_to_last/)."
+server_side_katex = true
+
+

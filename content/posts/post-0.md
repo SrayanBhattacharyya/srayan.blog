@@ -12,7 +12,7 @@ I could not find any article or blog on this idea, and felt having one could be 
 
 #### Introduction
 
-Now that we know the idea behind binary exponentiation; let us try expanding the idea. Say, we break the problem into two parts, $L$ and $R$, such that, once we have both the results, combining them gives us our final answer as $ans = L \odot R$, where $\odot$ is an _associative binary operator._ If  we can find $R$ as a function of $L$ as in $R = f(L)$ fast enough, say $O(X)$, then our final answer can be found in  $O(X\;log(n))$.
+Now that we know the idea behind binary exponentiation; let us try expanding the idea. Say, we break the problem into two parts, $L$ and $R$, such that, once we have both the results, combining them gives us our final answer as $ans = L \odot R$, where $\odot$ is an _associative binary operator._ If  we can find $R$ as a function of $L$ as in $R = f(L)$ fast enough, say $O(X)$, then our final answer can be found in  $O(X \cdot log(n))$.
 
 The idea is simple enough, so we now have a look at some simple examples. For the sake of simplicity we assume problem size $n$ is of form $2^k$ , $ k \in \mathbb{Z} $ .
 
@@ -22,9 +22,9 @@ We are starting from the simplest example. We know that $ans = \underbrace{a \cd
 
 $\newline$
 
-$$ans = \underbrace{\underbrace{\dots \dots \dots}_{L} \odot \underbrace{\dots \dots \dots}_{R=f(L)}}_\text{L`} \odot \underbrace{\dots \dots \dots \dots \dots \dots \dots}_\text{R` = f(L`)} \; \odot \dots \dots$$
+$$ans = \underbrace{\underbrace{\dots \dots \dots}_{L} \odot \underbrace{\dots \dots \dots}_{R=f(L)}}_{L'} \odot \underbrace{\dots \dots \dots \dots \dots \dots \dots}_{R` = f(L')} \; \odot \dots \dots$$
 
-We are able to compute $R`$ directly from $L`$, unlike other methods such as RMQ or Binary Lifting where we build our answer from already calculated $L$ and $R$ on the independent smaller ranges to later combine them to compute the the answer for the bigger range.
+We are able to compute $R'$ directly from $L'$, unlike other methods such as RMQ or Binary Lifting where we build our answer from already calculated $L$ and $R$ on the independent smaller ranges to later combine them to compute the the answer for the bigger range.
 
 **Time Complexity:** Finding $R = f(L)$ is $O(1)$, so total time complexity is $O(log(n))$. <br/>
 

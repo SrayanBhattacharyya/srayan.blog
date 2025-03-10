@@ -22,20 +22,12 @@ We are starting from the simplest example. We know that $ans = \underbrace{a \cd
 
 $\newline$
 
-<<<<<<< HEAD
 {% katex(block=true) %}
 ans = \underbrace{\underbrace{\dots \dots \dots}_{L} \odot \underbrace{\dots \dots \dots}_{R = f(L)}}_{\text{L}^{\prime}} \odot \underbrace{\dots \dots \dots \dots \dots \dots \dots}_{\text{R}^{\prime} = f(\text{L}^{\prime})} \; \odot \dots \dots
 
 {% end %}
 
-$\newline$
-
 We are able to compute $R'$ directly from $L'$, unlike other methods such as RMQ or Binary Lifting, where we build our answer from already calculated $L$ and $R$ on independent smaller ranges to later combine them to compute the answer for the bigger range.
-=======
-$$ans = \underbrace{\underbrace{\dots \dots \dots}_{L} \odot \underbrace{\dots \dots \dots}_{R=f(L)}}_{L'} \odot \underbrace{\dots \dots \dots \dots \dots \dots \dots}_{R` = f(L')} \; \odot \dots \dots$$
-
-We are able to compute $R'$ directly from $L'$, unlike other methods such as RMQ or Binary Lifting where we build our answer from already calculated $L$ and $R$ on the independent smaller ranges to later combine them to compute the the answer for the bigger range.
->>>>>>> 9f33b2dacbe6d62245d15b68ec4bdca4c8618dea
 
 **Time Complexity:** Finding $R = f(L)$ is $O(1)$, so total time complexity is $O(log(n))$. <br/>
 

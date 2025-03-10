@@ -3,18 +3,18 @@ title = "Binary Exponentiation Extended"
 date = 2025-03-09
 description = "Exploring extended applications of binary exponentiation in algorithmic problems"
 [extra]
-math = true
-author = "Original author from BinExpo Blog"
+toc = true
 +++
 
+The original discussion was posted as a Codeforces Blog entry [here](https://codeforces.com/blog/entry/122195).
 
-I could not find any article or blog on this idea, and felt having one could be helpful to many. There might be unwanted errors, so please feel free to to share any suggestions, corrections or concerns. For those who are unware of Binary Exponentation, [this CP-Algorithms article](https://cp-algorithms.com/algebra/binary-exp.html) or [this video by Errichto](https://youtu.be/L-Wzglnm4dM?si=VL1jTQI537JWwJ4-) can help get familiar with it.
+I could not find any article or blog on this idea, and felt having one could be helpful to many. There might be unwanted errors, so please feel free to to share any suggestions, corrections or concerns. For those who are unware of Binary Exponentiation, [this CP-Algorithms article](https://cp-algorithms.com/algebra/binary-exp.html) or [this video by Errichto](https://youtu.be/L-Wzglnm4dM?si=VL1jTQI537JWwJ4-) can help get familiar with it.
 
 #### Introduction
 
 Now that we know the idea behind binary exponentiation; let us try expanding the idea. Say, we break the problem into two parts, $L$ and $R$, such that, once we have both the results, combining them gives us our final answer as $ans = L \odot R$, where $\odot$ is an _associative binary operator._ If  we can find $R$ as a function of $L$ as in $R = f(L)$ fast enough, say $O(X)$, then our final answer can be found in  $O(X\;log(n))$.
 
-The idea is simple enough, so we now have a look at some simple examples. For the sake of simplicity we assume problem size $n$ is of form $2^k$ , $ k \in \mathbb{Z} $ .
+The idea is simple enough, so we now have a look at some simple examples. For the sake of simplicity we assume problem size $n$ is of form $2^k$ , $k \in \mathbb{Z}$ .
 
 #### **Example 1:** Calculating $a^n$
 
@@ -22,14 +22,18 @@ We are starting from the simplest example. We know that $ans = \underbrace{a \cd
 
 $\newline$
 
-$$ans = \underbrace{\underbrace{\dots \dots \dots}_{L} \odot \underbrace{\dots \dots \dots}_{R=f(L)}}_\text{L`} \odot \underbrace{\dots \dots \dots \dots \dots \dots \dots}_\text{R` = f(L`)} \; \odot \dots \dots$$
+{% katex(block=true) %}
+ans = \underbrace{\underbrace{\dots \dots \dots}_{L} \odot \underbrace{\dots \dots \dots}_{R = f(L)}}_{\text{L}^{\prime}} \odot \underbrace{\dots \dots \dots \dots \dots \dots \dots}_{\text{R}^{\prime} = f(\text{L}^{\prime})} \; \odot \dots \dots
 
-We are able to compute $R`$ directly from $L`$, unlike other methods such as RMQ or Binary Lifting where we build our answer from already calculated $L$ and $R$ on the independent smaller ranges to later combine them to compute the the answer for the bigger range.
+{% end %}
+
+$\newline$
+
+We are able to compute $R'$ directly from $L'$, unlike other methods such as RMQ or Binary Lifting, where we build our answer from already calculated $L$ and $R$ on independent smaller ranges to later combine them to compute the answer for the bigger range.
 
 **Time Complexity:** Finding $R = f(L)$ is $O(1)$, so total time complexity is $O(log(n))$. <br/>
 
-##### Implementation
-
+#### Implementation
 The below function only works if $n$ is even. One simple way to handle the odd case is to break the expression as $a^n = a \cdot a^{n-1}$. We can get the answer for $a^{n-1}$ because it's even ans whether $n$ is even or odd, in $\leq 2$ steps $n$ definitely gets halved which ensures that the time complexity remains $O(log(n))$.
 
 ```cpp
@@ -53,7 +57,9 @@ $$ans = 1 + r + r^{2} \dots r^{n-1} = \frac{r^{n}-1}{r-1}$$
 
 If we have to find the summation under arbitrary MOD then it's not necessary that $(r-1)^{-1}$ exists, and so we alternatively express our sum as 
 
-$$ans = \underbrace{1 + r + r^{2} \dots r^{ \frac{n-1}{2} } }_\text{L} + \underbrace{r^{ \frac{n}{2} } + \dots + r^{n-1}}_\text{R} $$
+{% katex(block=true) %}
+ans = \underbrace{1 + r + r^{2} \dots r^{ \frac{n-1}{2} } }_\text{L} + \underbrace{r^{ \frac{n}{2} } + \dots + r^{n-1}}_\text{R}
+{% end %}
 
 which gives $R = f(L) = r^{\frac{n}{2}} \cdot L$.
 
@@ -61,13 +67,13 @@ To handle the case for odd $n$ during implementation, we can break series as
 
 $\newline$
 
-$$ans = 1 + a \cdot \underbrace{(1 + a + a^2 + \dots + a^{n-2})}_\text{say sum is S}$$ 
+$ans = 1 + a \cdot \underbrace{(1 + a + a^2 + \dots + a^{n-2})}_\text{say sum is S}$ 
 
 We can find $S$ as $(n - 1)$ is even, and final answer will be $= 1 + a \cdot S$.
 
 **Time Complexity:** Computing $R = f(L)$ is $O(log(n))$, so our total time complexity becomes $O(log(n)^{2})$. But we can calculate powers of $r$ along with our series, so we restrict the final time complexity to $O(log(n))$.
 
-##### Implementation
+#### Implementation
 
 Naive Approach ($O(log(n)^{2})$) 
 
@@ -116,16 +122,22 @@ We can use a similar idea for calculating GP series of matrices $= I + A + A^2  
 
 We start by considering the simple series $\displaystyle  r + 2 \cdot r^2 + 3 \cdot r^3 \dots + (n-1)\cdot r^{n-1} = \sum\limits_{i=0}^{n-1} i\cdot r^i$. For this we express the summation as below
 
-$$ans = \underbrace{r + 2 \cdot r^2 + \dots + (\frac{n}{2}-1) \cdot r^{ \frac{n}{2}-1 }}_\text{L} + \underbrace{ \frac{n}{2} \cdot r^{\frac{n}{2}} + \dots + (n-1) \cdot r^{n-1}}_\text{R} $$
+{% katex(block=true) %}
+$$ans = \underbrace{r + 2 \cdot r^2 + \dots + (\frac{n}{2}-1) \cdot r^{ \frac{n}{2}-1 }}_{L} + \underbrace{ \frac{n}{2} \cdot r^{\frac{n}{2}} + \dots + (n-1) \cdot r^{n-1}}_{R} $$
 
+{% end %}
 Now we solve for $R = f(L)$.  
 
 ##### Solution for R as a function of L
 
+
 $$R = (\frac{n}{2} + 0) \cdot r^{\frac{n}{2}} + (\frac{n}{2} + 1) \cdot r^{\frac{n}{2}+1} + \dots + (\frac{n}{2} + i) \cdot r^{\frac{n}{2}+i} + \dots + (\frac{n}{2} + \frac{n}{2}-1) \cdot r^{\frac{n}{2} + \frac{n}{2}-1}$$
 
-$$\implies R = \frac{n}{2} \cdot \left( r^{\frac{n}{2}} + r^{\frac{n}{2}+1} + \dots + r^{\frac{n}{2}+i} + \dots + r^{n-1} \right) + r^{\frac{n}{2}} \cdot \underbrace{\left( 0 \cdot r^{0} + 1 \cdot r^{1} + \dots + i \cdot r^{i} + \dots + \left(\frac{n}{2}-1\right) \cdot r^{\frac{n}{2}-1} \right)}_{\text{L}}$$
+{% katex(block=true) %}
 
+\small{\implies R = \frac{n}{2} \cdot \left( r^{\frac{n}{2}} + r^{\frac{n}{2}+1} + \dots + r^{\frac{n}{2}+i} + \dots + r^{n-1} \right) + r^{\frac{n}{2}} \cdot \underbrace{\left( 0 \cdot r^{0} + 1 \cdot r^{1} + \dots + i \cdot r^{i} + \dots + \left(\frac{n}{2}-1\right) \cdot r^{\frac{n}{2}-1} \right)}_{\text{L}}}
+
+{% end %}
 
 $$\implies R = r^{\frac{n}{2}} \cdot \left( \frac{n}{2} \cdot \underbrace{\left( 1 + r^{1} + \dots + r^{i} + \dots + r^{\frac{n}{2}-1} \right)}_{\text{GP series}} + L \right)$$
 
@@ -142,13 +154,17 @@ $\newline$
 $$sum = r + 2\cdot r^2 + \dots + (n-1) \cdot r^{n-1}$$
 $$= \left(r + r^2 + \dots + r^i + \dots + r^{n-1} \right) + \left( r^2 + 2\cdot r^3 + \dots + (i-1)\cdot r^{i-1} + \dots + (n-2)\cdot r^{n-1} \right)$$
 
-$$= r \cdot \underbrace{\left(1 + r^1 + \dots + r^i + \dots + r^{n-2} \right)}_\text{X} + r \cdot \underbrace{\left( r^1 + 2\cdot r^2 + \dots + i\cdot r^{i} + \dots + (n-2)\cdot r^{n-2} \right)}_\text{Y}$$
+{% katex(block=true) %}
+
+$$= r \cdot \underbrace{\left(1 + r^1 + \dots + r^i + \dots + r^{n-2} \right)}_{\text{X}} + r \cdot \underbrace{\left( r^1 + 2\cdot r^2 + \dots + i\cdot r^i + \dots + (n-2)\cdot r^{n-2} \right)}_{\text{Y}}$$
+
+{% end %}
 
 We can get $X$ and $Y$ because they are of even length, and our final answer will be $= r \cdot X + r \cdot Y$ .
 
 **Time Complexity:** To get $R$ we need to solve $L_{0}$ which takes $O(log(n))$ so total will be $O(log(n)^2)$, but we can calculate powers of $r$, $L_{0}$ and $L$ together which makes total time $O(log(n))$.
 
-##### Implementation
+#### Implementation
 
 ```cpp
 // {r^n , 1+r+r^2 ... + r^(n-1) , 0 + r + 2r^2 + ... + (n-1)r^(n-1) }
@@ -169,19 +185,21 @@ array<int, 3> APGP(int r, int n)
 }
 ```
 
-For any generic AP-GP series $\sum_{i=0}^{n-1} ( a + i \cdot b ) \cdot r^i = a \cdot \underbrace{\sum_{i=0}^{n-1} r^i}_{\text{L0}} + b \cdot \underbrace{\sum_{i=0}^{n-1} i \cdot r^i}_{\text{L}} = a \cdot L_{0} + b \cdot L$, where both are being calculated with single function call.
+{% katex(block=true) %}
+For any generic AP-GP series $\sum_{i=0}^{n-1} ( a + i \cdot b ) \cdot r^i = a \cdot \underbrace{\sum_{i=0}^{n-1} r^i}_{{L0}} + b \cdot \underbrace{\sum_{i=0}^{n-1} i \cdot r^i}_{{L}} = a \cdot L_{0} + b \cdot L$, where both are being calculated with single function call.
 
+{% end %}
 [AtCoder ABC 129 task F](https://atcoder.jp/contests/abc129/tasks/abc129_f) is a good practice example for the ideas in the blog.
 
-#### Genralising the above series summations
+#### Generalising the above series summations
 
-Now, let us consider $\displaystyle S(n,m) = ‎‎\sum\limits_{i=0}^{n-1} i^m \cdot r^i $. Then we would have GP $= S(n,0)$ and AP-GP $= S(n,1)$. Hence,
+Now, let us consider $\displaystyle S(n,m) = ‎‎\sum\limits_{i=0}^{n-1} i^m \cdot r^i$. Then we would have GP $= S(n,0)$ and AP-GP $= S(n,1)$. Hence,
 
 $\newline$
 
-$$\displaystyle S(n,m) = r + 2^m \cdot r^2 + \dots + i^m \cdot r^i + \dots + (n-1)^m \cdot r^{n-1}$$
-
-$$\displaystyle  = \underbrace{r + 2^m \cdot r^2 + \dots + (\frac{n}{2}-1)^{m} \cdot r^{\frac{n}{2}-1}}_\text{L(m,n/2)} + \underbrace{{(\frac{n}{2}})^{m} \cdot r^{\frac{n}{2}}  + \dots + (n-1)^m \cdot r^{n-1}}_\text{R(m,n/2)}$$
+{% katex(block=true) %}
+\displaystyle = \underbrace{r + 2^m \cdot r^2 + \dots + \left(\frac{n}{2}-1\right)^{m} \cdot r^{\frac{n}{2}-1}}_{L(m,n/2)} + \underbrace{\left(\frac{n}{2}\right)^{m} \cdot r^{\frac{n}{2}} + \dots + (n-1)^m \cdot r^{n-1}}_{R(m,n/2)}
+{% end %}
 
 Here $L_{m,\frac{n}{2}} = S(\frac{n}{2},m)$. Then, $S(n,m) = L_{m,\frac{n}{2}} + R_{m,\frac{n}{2}}$, We need to compute $R_{m,\frac{n}{2}}$.
 
@@ -201,7 +219,7 @@ $$\displaystyle R_{m,\frac{n}{2}} = r^{\frac{n}{2}} \cdot \left( \sum\limits_{j=
 
 As $j \leq m$ if we calculate everything together, just like above and hence know the value of every $L_{j,\frac{n}{2}}$ without any extra time. We can validate our results for the above illustrated examples of AP and AP-GP series.
 
-##### Validating our results against our previous examples
+#### Validating our results against our previous examples
 
 **Case 1:** for $m=0$ , which is simple GP series
 
@@ -221,7 +239,11 @@ $$\displaystyle S_{n,m} = r \cdot \left( \sum\limits_{i=0}^{n-2} \sum\limits_{j=
 
 And swapping summations
 
-$$\displaystyle S_{n,m} = r \cdot \left( \sum\limits_{j=0}^{m} \binom{m}{j} \underbrace{\sum\limits_{i=0}^{n-2} i^j \cdot r^i}_\text{S(n-1,j)} \right) = r \cdot \left( \sum\limits_{j=0}^{m} \binom{m}{j} S_{n-1,j} \right) \hspace{0.25cm} \text{for}  \hspace{0.25cm}m > 0$$
+{% katex(block=true) %}
+\displaystyle S_{n,m} = r \cdot \left( \sum_{j=0}^{m} \binom{m}{j} \underbrace{\sum_{i=0}^{n-2} i^j \cdot r^i}_{S(n-1,j)} \right) = r \cdot \left( \sum_{j=0}^{m} \binom{m}{j} S_{n-1,j} \right)
+{% end %}
+
+for $m$ > $0$.
 
 Hence, we have the final result as:
 
@@ -242,8 +264,30 @@ We can also construct a clean visualization of the even and odd cases using matr
 
 Dimensions are: $(m+1,1) = (m+1,m+2) \cdot (m+2,1)$.
 
+{% katex(block=true) %}
+\begin{bmatrix} 
+    S_{n,0} \\ 
+    S_{n,1} \\ 
+    \vdots \\ 
+    S_{n,m} 
+\end{bmatrix} 
+=
+\begin{bmatrix} 
+    1 & \binom{0}{0} & 0 & 0 & \cdots & 0 \\ 
+    0 & \binom{1}{0} & \binom{1}{1} & 0 & \cdots & 0 \\ 
+    \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\ 
+    0 & \binom{m}{0} & \binom{m}{1} & \binom{m}{2} & \cdots & \binom{m}{m} 
+\end{bmatrix} 
+\cdot 
+\begin{bmatrix} 
+    1 \\ 
+    r \cdot S_{n-1,0} \\ 
+    r \cdot S_{n-1,1} \\ 
+    \vdots \\ 
+    r \cdot S_{n-1,m} 
+\end{bmatrix}
 
-$$\begin{bmatrix} S_{n,0} \\ S_{n,1} \\ \vdots \\ S_{n,m} \end{bmatrix} = \begin{bmatrix} 1 & \binom{0}{0} & 0 & 0 & \dots & 0 \\ 0 & \binom{1}{0} & \binom{1}{1} & 0 & \dots & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\ 0 & \binom{m}{0} & \binom{m}{1} & \binom{m}{2} & \dots & \binom{m}{m} \end{bmatrix} \cdot \begin{bmatrix} 1 \\ r \cdot S_{n-1,0} \\ r \cdot S_{n-1,1} \\ \vdots \\ r \cdot S_{n-1,m} \end{bmatrix}$$
+{% end %}
 
 We will return the array $(S_{n,0},S_{n,1}, \dots , S_{n,m}, r^n)$.
 
@@ -251,29 +295,12 @@ We will return the array $(S_{n,0},S_{n,1}, \dots , S_{n,m}, r^n)$.
 
 Dimension are: $(m+1,1) = (m+1,m+1) \cdot (m+1,1)$.
 
-$$
-\begin{bmatrix} 
-    R_{0,\frac{n}{2}}  \\ 
-    R_{1,\frac{n}{2}}  \\ 
-    \vdots   \\ 
-    R_{m,\frac{n}{2}}  
-\end{bmatrix} 
-= r^{\frac{n}{2}} \cdot 
-\begin{bmatrix} 
-    \binom{0}{0} & 0 & 0 & \dots  & 0 \\ 
-    \binom{1}{0} \cdot \frac{n}{2} & \binom{1}{1} & 0 & \dots  & 0 \\ 
-    \vdots & \vdots & \vdots & \ddots & \vdots \\ 
-    \binom{m}{0} \cdot \left(\frac{n}{2}\right)^m &  \binom{m}{1} \cdot \left(\frac{n}{2}\right)^{m-1} &  \binom{m}{2} \cdot \left(\frac{n}{2}\right)^{m-2} & \dots  &  \binom{m}{m}  
-\end{bmatrix} 
-\cdot 
-\begin{bmatrix} 
-    L_{0,\frac{n}{2}}  \\ 
-    L_{1,\frac{n}{2}}  \\ 
-    L_{2,\frac{n}{2}}  \\ 
-    \vdots   \\ 
-    L_{m,\frac{n}{2}}  
-\end{bmatrix}
-$$
+
+{% katex(block=true) %}
+
+$$\begin{bmatrix} R_{0,\frac{n}{2}} \\ R_{1,\frac{n}{2}} \\ \vdots \\ R_{m,\frac{n}{2}} \end{bmatrix} = r^{\frac{n}{2}} \cdot \begin{bmatrix} \binom{0}{0} & 0 & 0 & \cdots & 0 \\ \binom{1}{0} \cdot \frac{n}{2} & \binom{1}{1} & 0 & \cdots & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ \binom{m}{0} \cdot \left(\frac{n}{2}\right)^m & \binom{m}{1} \cdot \left(\frac{n}{2}\right)^{m-1} & \binom{m}{2} \cdot \left(\frac{n}{2}\right)^{m-2} & \cdots & \binom{m}{m} \end{bmatrix} \cdot \begin{bmatrix} L_{0,\frac{n}{2}} \\ L_{1,\frac{n}{2}} \\ L_{2,\frac{n}{2}} \\ \vdots \\ L_{m,\frac{n}{2}} \end{bmatrix}$$
+
+{% end %}
 
 We will return the array $(L_{0, n/2} + R_{0, n/2},L_{1, n/2} + R_{1, n/2}, \dots , L_{m, n/2} + R_{m, n/2}, r^n)$.
 

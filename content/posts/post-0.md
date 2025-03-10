@@ -1,5 +1,5 @@
 +++
-title = "Binary Exponentiation Extended"
+title = "Calculating Series Sums with Binary Exponentiation"
 date = 2025-03-09
 description = "Exploring extended applications of binary exponentiation in algorithmic problems"
 [extra]

@@ -9,6 +9,6 @@ I am in my final year of Bachelor's in Electrical Engineering from Jadavpur Univ
 All my past blog posts originally posted as an entry in the Codeforces blog will be found here, and any further appropriate blog will be posted on both platforms.
 
 While you are here, why don’t we play a short game of **_Two Truths and a Lie_**? Have a go -
-- $(T+F)(T^{\prime} + F^{\prime}) + TF^{\prime}$
-- $(T F^{\prime} + T^{\prime}F)(T + F) + (T^{\prime} + F^{\prime})^{\prime}$
-- $((T+T^{\prime})(F+F^{\prime}))^{\prime} + (TF)^{\prime}$
+- $(A A^\prime + B B^\prime)(A B + A^\prime B^\prime)$
+- $(A + B)(A^\prime + B^\prime) + (A B + A^\prime B^\prime)$
+- $(A + B + A^\prime B^\prime) (A^\prime + B^\prime + A B)$
